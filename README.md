@@ -1,2 +1,5 @@
-# zatsunen
-雑念
+# 雑念
+
+## LICENSE
+
+[MIT](./LICENSE)
