@@ -21,7 +21,8 @@ func SetLocalConfig(path string) Environment {
 
 			LogConfig: LogConfig{
 				Options: &slog.HandlerOptions{
-					Level: slog.LevelDebug,
+					AddSource: true,
+					Level:     slog.LevelDebug,
 				},
 			},
 			CommonConfig: GetCommonConfig(),
