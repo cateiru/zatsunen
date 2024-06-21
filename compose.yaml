@@ -1,61 +1,6 @@
+include:
+  - ./docker/compose.db.yaml
 services:
-  db:
-    container_name: zatsunen_db
-    platform: linux/amd64
-    build:
-      context: .
-      dockerfile_inline: |
-        FROM mysql:8.0-debian
-
-        RUN apt update && apt install -y curl
-
-        # Install https://github.com/golang-migrate/migrate
-        RUN curl -s https://packagecloud.io/install/repositories/golang-migrate/migrate/script.deb.sh | bash \
-          && apt install -y migrate
-
-        # Install https://github.com/k0kubun/sqldef/tree/v0.17.11
-        RUN curl -OL https://github.com/k0kubun/sqldef/releases/download/v0.17.11/mysqldef_linux_amd64.tar.gz \
-          && tar xf mysqldef_linux_amd64.tar.gz -C /usr/bin/
-    profiles: ["db", "debug"]
-    # データベースが起動し、アクセスができるようになるまでヘルスチェックして監視する
-    healthcheck:
-      test: "mysqladmin ping"
-      interval: 5s
-      timeout: 10s
-      retries: 5
-    environment:
-      MYSQL_USER: docker
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: docker
-      MYSQL_DATABASE: local
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./db/.data:/var/lib/mysql
-      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./db/setup:/docker-entrypoint-initdb.d
-      - ./db/migrations:/migrations
-      - ./scripts/docker:/scripts
-      - ./db/schema.sql:/schema.sql
-      - ./db/.dump_data/:/dump_data
-    ports:
-      - "127.0.0.1:3306:3306"
-  # いまのところ使う予定はないのでコメントアウト
-  # gcs:
-  #   image: fsouza/fake-gcs-server
-  #   tty: true
-  #   stdin_open: true
-  #   privileged: true
-  #   profiles: ["db"]
-  #   security_opt:
-  #     - seccomp:unconfined
-  #   ports:
-  #     - 4443:4443
-  #   volumes:
-  #     - ./.data:/data/oreore-me:cached
-  #     - ./.data:/data/test-oreore-me:cached
-  #     - ./.storage:/storage
-  #   command: -scheme http -public-host localhost:4443
   backend_app:
     container_name: zatsunen_backend_app
     build:
@@ -75,7 +20,6 @@ services:
       - "8080:8080"
     volumes:
       - .:/app
-    profiles: ["app", "debug"]
     depends_on:
       db:
         condition: service_healthy
@@ -90,7 +34,6 @@ services:
       - "3002:3002"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-    profiles: ["app", "debug"]
     environment:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
