@@ -1,5 +1,7 @@
 package config
 
+import "log/slog"
+
 type Local struct {
 	Config
 }
@@ -17,6 +19,11 @@ func SetLocalConfig(path string) Environment {
 		Config: Config{
 			Mode: "local",
 
+			LogConfig: LogConfig{
+				Options: &slog.HandlerOptions{
+					Level: slog.LevelDebug,
+				},
+			},
 			CommonConfig: GetCommonConfig(),
 		},
 	}

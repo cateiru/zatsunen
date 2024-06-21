@@ -1,5 +1,7 @@
 package config
 
+import "log/slog"
+
 type Production struct {
 	Config
 }
@@ -17,6 +19,11 @@ func SetProductionConfig(path string) Environment {
 		Config: Config{
 			Mode: "production",
 
+			LogConfig: LogConfig{
+				Options: &slog.HandlerOptions{
+					Level: slog.LevelError,
+				},
+			},
 			CommonConfig: GetCommonConfig(),
 		},
 	}
