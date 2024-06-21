@@ -5,11 +5,20 @@ import (
 	"os"
 
 	"github.com/cateiru/zatsunen/src/config"
+	"github.com/lmittmann/tint"
 )
 
 func SetupLogger(c config.LogConfig) *slog.Logger {
-	jsonHandler := slog.NewJSONHandler(os.Stdout, c.Options)
-	logger := slog.New(jsonHandler)
+	if c.IsJsonLog {
+		jsonHandler := slog.NewJSONHandler(os.Stdout, c.Options)
+		return slog.New(jsonHandler)
+	}
 
-	return logger
+	tintHandler := tint.NewHandler(os.Stdout, &tint.Options{
+		AddSource:   c.Options.AddSource,
+		Level:       c.Options.Level,
+		ReplaceAttr: c.Options.ReplaceAttr,
+	})
+
+	return slog.New(tintHandler)
 }

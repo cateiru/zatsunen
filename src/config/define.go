@@ -7,7 +7,8 @@ type CommonConfig struct{}
 
 // ログ設定
 type LogConfig struct {
-	Options *slog.HandlerOptions
+	Options   *slog.HandlerOptions
+	IsJsonLog bool
 }
 
 type Config struct {

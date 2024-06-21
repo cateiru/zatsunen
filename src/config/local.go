@@ -24,6 +24,7 @@ func SetLocalConfig(path string) Environment {
 					AddSource: true,
 					Level:     slog.LevelDebug,
 				},
+				IsJsonLog: false,
 			},
 			CommonConfig: GetCommonConfig(),
 		},

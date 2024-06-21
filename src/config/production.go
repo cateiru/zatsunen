@@ -45,6 +45,7 @@ func SetProductionConfig(path string) Environment {
 						return a
 					},
 				},
+				IsJsonLog: true,
 			},
 			CommonConfig: GetCommonConfig(),
 		},
