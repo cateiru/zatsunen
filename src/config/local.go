@@ -16,6 +16,8 @@ func SetLocalConfig() Environment {
 	return Local{
 		Config: Config{
 			Mode: "local",
+
+			CommonConfig: GetCommonConfig(),
 		},
 	}
 }

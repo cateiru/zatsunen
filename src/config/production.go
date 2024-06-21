@@ -16,6 +16,8 @@ func SetProductionConfig() Environment {
 	return Local{
 		Config: Config{
 			Mode: "production",
+
+			CommonConfig: GetCommonConfig(),
 		},
 	}
 }
