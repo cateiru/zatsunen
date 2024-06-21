@@ -12,7 +12,7 @@ func (l Production) GetConfig() Config {
 	return l.Config
 }
 
-func SetProductionConfig() Environment {
+func SetProductionConfig(path string) Environment {
 	return Local{
 		Config: Config{
 			Mode: "production",

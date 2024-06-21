@@ -12,7 +12,7 @@ func (l Local) GetConfig() Config {
 	return l.Config
 }
 
-func SetLocalConfig() Environment {
+func SetLocalConfig(path string) Environment {
 	return Local{
 		Config: Config{
 			Mode: "local",
