@@ -332,4 +332,6 @@ $RECYCLE.BIN/
 ## DB
 
 ./db/.dump_data/**
+./db/.dump/**
 !./db/.dump_data/.gitkeep
+!./db/.dump/.gitkeep
