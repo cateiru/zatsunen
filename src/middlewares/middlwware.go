@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -18,6 +19,7 @@ func Logger(logger *slog.Logger) func(next http.Handler) http.Handler {
 				ctx := r.Context()
 				end := time.Now()
 				status := ww.Status()
+				statusMessage := http.StatusText(status)
 
 				attrs := []slog.Attr{
 					slog.Time("time", time.Now()),
@@ -36,11 +38,11 @@ func Logger(logger *slog.Logger) func(next http.Handler) http.Handler {
 					logLevel = slog.LevelError
 				}
 
-				logger.LogAttrs(ctx, logLevel, "request", attrs...)
+				message := fmt.Sprintf("%s %d(%s) %s", r.Method, status, statusMessage, r.URL.Path)
+				logger.LogAttrs(ctx, logLevel, message, attrs...)
 			}()
 
-			next.ServeHTTP(w, r)
-
+			next.ServeHTTP(ww, r)
 		}
 
 		return http.HandlerFunc(fh)
