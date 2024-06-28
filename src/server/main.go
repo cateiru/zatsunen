@@ -1,12 +1,9 @@
 package server
 
 import (
-	"net/http"
-
 	"github.com/cateiru/zatsunen/src/config"
 	"github.com/cateiru/zatsunen/src/log"
-	"github.com/cateiru/zatsunen/src/routes"
-	"github.com/go-chi/chi/v5"
+	"github.com/labstack/echo/v4"
 )
 
 func RunServer(mode string, path string) {
@@ -16,8 +13,10 @@ func RunServer(mode string, path string) {
 
 	l.Info(configPerEnv.GetMode())
 
-	r := chi.NewRouter()
-	routes.Routes(r, &c, l)
+	e := echo.New()
+	// routes.Routes(r, &c, l)
 
-	http.ListenAndServe(":8080", r)
+	if err := e.Start(":8080"); err != nil {
+		l.Error(err.Error())
+	}
 }

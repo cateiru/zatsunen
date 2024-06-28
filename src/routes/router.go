@@ -6,13 +6,13 @@ import (
 	"github.com/cateiru/zatsunen/src/config"
 	"github.com/cateiru/zatsunen/src/handler"
 	"github.com/cateiru/zatsunen/src/middlewares"
-	"github.com/go-chi/chi/v5"
+	"github.com/labstack/echo/v4"
 )
 
-func Routes(r *chi.Mux, c *config.Config, l *slog.Logger) {
+func Routes(e *echo.Echo, c *config.Config, l *slog.Logger) {
 	h := handler.NewHandler(c, l)
 
-	r.Use(middlewares.Logger(h.Logger))
+	e.Use(middlewares.LoggerMiddleware(h.Logger))
 
-	r.Get("/", h.RootHandler)
+	e.GET("/", h.RootHandler)
 }

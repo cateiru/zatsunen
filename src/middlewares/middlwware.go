@@ -3,48 +3,44 @@ package middlewares
 import (
 	"fmt"
 	"log/slog"
-	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-func Logger(logger *slog.Logger) func(next http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		fh := func(w http.ResponseWriter, r *http.Request) {
-			ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
-			start := time.Now()
+func LoggerMiddleware(logger *slog.Logger) echo.MiddlewareFunc {
+	return middleware.RequestLoggerWithConfig(
+		middleware.RequestLoggerConfig{
+			LogURI:      true,
+			LogStatus:   true,
+			LogMethod:   true,
+			LogHost:     true,
+			LogError:    true,
+			LogRemoteIP: true,
 
-			defer func() {
-				ctx := r.Context()
-				end := time.Now()
-				status := ww.Status()
-				statusMessage := http.StatusText(status)
-
+			LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+				ctx := c.Request().Context()
 				attrs := []slog.Attr{
 					slog.Time("time", time.Now()),
-					slog.Duration("duration", end.Sub(start)),
+					slog.Duration("duration", time.Since(v.StartTime)),
 
-					slog.String("method", r.Method),
-					slog.Int("status", ww.Status()),
-					slog.String("host", r.Host),
-					slog.String("path", r.URL.Path),
-					slog.String("query", r.URL.RawQuery),
-					slog.String("ip", r.RemoteAddr),
+					slog.String("method", v.Method),
+					slog.Int("status", v.Status),
+					slog.String("host", v.Host),
+					slog.String("path", v.URIPath),
+					slog.String("ip", v.RemoteIP),
 				}
+				message := fmt.Sprintf("%s %d(%s) %s", v.Method, v.Status, v.URIPath)
 
 				logLevel := slog.LevelInfo
-				if status >= 500 && status < 500 {
+				if v.Error != nil {
 					logLevel = slog.LevelError
 				}
 
-				message := fmt.Sprintf("%s %d(%s) %s", r.Method, status, statusMessage, r.URL.Path)
 				logger.LogAttrs(ctx, logLevel, message, attrs...)
-			}()
-
-			next.ServeHTTP(ww, r)
-		}
-
-		return http.HandlerFunc(fh)
-	}
+				return nil
+			},
+		},
+	)
 }
