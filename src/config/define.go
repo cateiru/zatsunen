@@ -31,7 +31,7 @@ type Environment interface {
 	GetConfig() Config
 }
 
-var configs = map[string]func(path string) Environment{
+var configMap = map[string]func(path string) Environment{
 	"local":      SetLocalConfig,
 	"production": SetProductionConfig,
 }
@@ -39,7 +39,7 @@ var configs = map[string]func(path string) Environment{
 // mode に応じた設定を取得
 // mode が不正な場合はローカル設定を返す
 func GetConfig(mode string, path string) Environment {
-	setConfigFunc := configs[mode]
+	setConfigFunc := configMap[mode]
 	if setConfigFunc == nil {
 		return SetLocalConfig(path)
 	}
