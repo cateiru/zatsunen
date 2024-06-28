@@ -20,9 +20,9 @@ type MiddlewareConfig struct {
 
 type Config struct {
 	Mode string
+	CommonConfig
 
 	LogConfig
-	CommonConfig
 	MiddlewareConfig
 }
 
