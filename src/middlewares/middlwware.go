@@ -3,8 +3,10 @@ package middlewares
 import (
 	"fmt"
 	"log/slog"
+	"slices"
 	"time"
 
+	"github.com/cateiru/zatsunen/src/config"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -43,4 +45,21 @@ func LoggerMiddleware(logger *slog.Logger) echo.MiddlewareFunc {
 			},
 		},
 	)
+}
+
+var GzipMiddleware = middleware.Gzip
+
+func CsrfMiddleware(config config.MiddlewareConfig) echo.MiddlewareFunc {
+	allowSecFetchSiteValues := config.AllowSecFetchSiteValues
+
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			secFetchSiteHeader := c.Request().Header.Get("Sec-Fetch-Site")
+			if len(allowSecFetchSiteValues) == 0 || slices.Contains(allowSecFetchSiteValues, secFetchSiteHeader) {
+				return next(c)
+			}
+
+			return c.String(403, "Forbidden")
+		}
+	}
 }
