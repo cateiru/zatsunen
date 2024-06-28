@@ -31,7 +31,7 @@ func LoggerMiddleware(logger *slog.Logger) echo.MiddlewareFunc {
 					slog.String("path", v.URIPath),
 					slog.String("ip", v.RemoteIP),
 				}
-				message := fmt.Sprintf("%s %d(%s) %s", v.Method, v.Status, v.URIPath)
+				message := fmt.Sprintf("%s %d %s", v.Method, v.Status, v.URIPath)
 
 				logLevel := slog.LevelInfo
 				if v.Error != nil {
