@@ -11,11 +11,19 @@ type LogConfig struct {
 	IsJsonLog bool
 }
 
+// ミドルウェア設定
+type MiddlewareConfig struct {
+	// `Sec-Fetch-Site` ヘッダーの許可する値
+	// なにも設定しない場合すべての値を許可します
+	AllowSecFetchSiteValues []string
+}
+
 type Config struct {
 	Mode string
 
 	LogConfig
 	CommonConfig
+	MiddlewareConfig
 }
 
 type Environment interface {

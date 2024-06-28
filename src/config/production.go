@@ -17,7 +17,8 @@ func (l Production) GetConfig() Config {
 func SetProductionConfig(path string) Environment {
 	return Local{
 		Config: Config{
-			Mode: "production",
+			Mode:         "production",
+			CommonConfig: GetCommonConfig(),
 
 			LogConfig: LogConfig{
 				Options: &slog.HandlerOptions{
@@ -47,7 +48,13 @@ func SetProductionConfig(path string) Environment {
 				},
 				IsJsonLog: true,
 			},
-			CommonConfig: GetCommonConfig(),
+
+			MiddlewareConfig: MiddlewareConfig{
+				AllowSecFetchSiteValues: []string{
+					"same-origin",
+					"same-site",
+				},
+			},
 		},
 	}
 }

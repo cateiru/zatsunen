@@ -17,7 +17,8 @@ func (l Local) GetConfig() Config {
 func SetLocalConfig(path string) Environment {
 	return Local{
 		Config: Config{
-			Mode: "local",
+			Mode:         "local",
+			CommonConfig: GetCommonConfig(),
 
 			LogConfig: LogConfig{
 				Options: &slog.HandlerOptions{
@@ -26,7 +27,11 @@ func SetLocalConfig(path string) Environment {
 				},
 				IsJsonLog: false,
 			},
-			CommonConfig: GetCommonConfig(),
+
+			MiddlewareConfig: MiddlewareConfig{
+				// ローカル環境なので全て許可
+				AllowSecFetchSiteValues: []string{},
+			},
 		},
 	}
 }
