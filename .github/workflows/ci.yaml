@@ -15,7 +15,7 @@ jobs:
       TZ: "Asia/Tokyo"
       STORAGE_URL: "localhost:4443"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
       - name: setup go
         uses: actions/setup-go@v5
         with:
