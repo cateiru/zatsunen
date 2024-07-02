@@ -1,0 +1,38 @@
+
+[TestProductionConfig - 1]
+config.Local{
+    Config: config.Config{
+        Mode:         "production",
+        CommonConfig: config.CommonConfig{},
+        LogConfig:    config.LogConfig{
+            Options: &slog.HandlerOptions{
+                AddSource:   true,
+                Level:       slog.Level(0),
+                ReplaceAttr: func([]string, slog.Attr) slog.Attr {...},
+            },
+            IsJsonLog: true,
+        },
+        MiddlewareConfig: config.MiddlewareConfig{
+            AllowSecFetchSiteValues: {"same-origin", "same-site"},
+        },
+    },
+}
+---
+
+[TestProductionConfig - 2]
+config.Config{
+    Mode:         "production",
+    CommonConfig: config.CommonConfig{},
+    LogConfig:    config.LogConfig{
+        Options: &slog.HandlerOptions{
+            AddSource:   true,
+            Level:       slog.Level(0),
+            ReplaceAttr: func([]string, slog.Attr) slog.Attr {...},
+        },
+        IsJsonLog: true,
+    },
+    MiddlewareConfig: config.MiddlewareConfig{
+        AllowSecFetchSiteValues: {"same-origin", "same-site"},
+    },
+}
+---

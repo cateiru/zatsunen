@@ -8,20 +8,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetMode(t *testing.T) {
-	local := config.SetLocalConfig("/path")
-
-	require.Equal(t, local.GetMode(), "local")
-}
-
-func TestGetConfig(t *testing.T) {
-	local := config.SetLocalConfig("/path")
-
-	snaps.MatchSnapshot(t, local.GetConfig())
-}
-
-func TestSetLocalConfig(t *testing.T) {
+func TestLocalConfig(t *testing.T) {
 	local := config.SetLocalConfig("/path")
 
 	snaps.MatchSnapshot(t, local)
+
+	require.Equal(t, local.GetMode(), "local")
+	snaps.MatchSnapshot(t, local.GetConfig())
 }
