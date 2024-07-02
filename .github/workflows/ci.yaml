@@ -29,10 +29,8 @@ jobs:
       - name: build
         run: go build -v ./...
       - name: test
-        run: ./scripts/test.sh -cover -json | tee ./go-test.out | tparse
+        run: go test ./... -cover -json | tee ./go-test.out | tparse
       - name: add job summary
         if: always()
         run: |
           tparse -all -file ./go-test.out -format markdown >> $GITHUB_STEP_SUMMARY
-      - name: upload coverage to codecov
-        uses: codecov/codecov-action@v4
