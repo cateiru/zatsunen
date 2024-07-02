@@ -53,3 +53,11 @@ services:
   #     - ../db/.gcs_data:/data/zatsunen:cached
   #     - ../db/.storage:/storage
   #   command: -scheme http -public-host localhost:4443
+  healthcheck:
+    image: alpine:latest
+    profiles:
+      - healthcheck
+    command: echo "I'm healthy"
+    depends_on:
+      db:
+        condition: service_healthy
