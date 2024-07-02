@@ -1,0 +1,38 @@
+
+[TestGetConfig - 1]
+config.Config{
+    Mode:         "local",
+    CommonConfig: config.CommonConfig{},
+    LogConfig:    config.LogConfig{
+        Options: &slog.HandlerOptions{
+            AddSource:   true,
+            Level:       slog.Level(-4),
+            ReplaceAttr: func([]string, slog.Attr) slog.Attr {...},
+        },
+        IsJsonLog: false,
+    },
+    MiddlewareConfig: config.MiddlewareConfig{
+        AllowSecFetchSiteValues: {},
+    },
+}
+---
+
+[TestSetLocalConfig - 1]
+config.Local{
+    Config: config.Config{
+        Mode:         "local",
+        CommonConfig: config.CommonConfig{},
+        LogConfig:    config.LogConfig{
+            Options: &slog.HandlerOptions{
+                AddSource:   true,
+                Level:       slog.Level(-4),
+                ReplaceAttr: func([]string, slog.Attr) slog.Attr {...},
+            },
+            IsJsonLog: false,
+        },
+        MiddlewareConfig: config.MiddlewareConfig{
+            AllowSecFetchSiteValues: {},
+        },
+    },
+}
+---
