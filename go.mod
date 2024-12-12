@@ -3,6 +3,7 @@ module github.com/cateiru/zatsunen
 go 1.22.4
 
 require (
+	github.com/cateiru/go-http-easy-test/v2 v2.0.1
 	github.com/gkampitakis/go-snaps v0.5.4
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/lmittmann/tint v1.0.4
@@ -10,7 +11,6 @@ require (
 )
 
 require (
-	github.com/cateiru/go-http-easy-test/v2 v2.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gkampitakis/ciinfo v0.3.0 // indirect
 	github.com/gkampitakis/go-diff v1.3.2 // indirect
@@ -29,10 +29,10 @@ require (
 	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/net v0.24.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
